@@ -14,11 +14,34 @@ class Student extends React.Component {
             name: "",
             age: "",
             grade: "",
-            gender: ""
+            gender: "",
+            elements: []
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount(){
+        const dataRef = firebase.database().ref('students');
+        dataRef.on('value', (snapshot) => {
+            let elements = snapshot.val();
+            console.log(elements);
+            let newState = [];
+            for(let element in elements) {
+                newState.push({
+                    id: element,
+                    name: elements[element].name,
+                    age: elements[element].age,
+                    grade: elements[element].grade,
+                    gender: elements[element].gender
+                });
+            }
+
+            this.setState({
+                elements: newState
+            });
+        });
     }
 
     handleChange = (e) => {
@@ -45,7 +68,8 @@ class Student extends React.Component {
         });
       }
 
-    render(){
+    render(){                
+
         return(
             <div className="StudentMain"> 
             <section className="add-item">
@@ -58,7 +82,10 @@ class Student extends React.Component {
             </form>
             </section>
             </div>
+
+
         )
+
     }
 }
 
