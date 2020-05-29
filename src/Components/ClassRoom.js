@@ -9,17 +9,17 @@ class ClassRoom extends React.Component {
 
     obtainCommonData = () => {
         // const rootRef = firebase.database.ref()
-
         firebase.database().ref('students').on("child_added", snap => {
             // Getting the user data based on their unique key ID
             let userRef = firebase.database().ref('students/' + snap.key)
             userRef.once('value').then(userSnap =>{
-
+                
             });
         console.log(snap.val().name)
         console.log(snap.val().class)
         console.log(snap.key)
         });
+
     }
 
 

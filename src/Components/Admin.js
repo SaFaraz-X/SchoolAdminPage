@@ -3,7 +3,6 @@ import '../App.css';
 import '../index.js'
 import firebase from 'firebase';
 import app  from '../firebase';
-// import DisplayData from './DisplayData.js';
 
 class Admin extends React.Component {
     constructor(props){
@@ -14,32 +13,30 @@ class Admin extends React.Component {
         this.state = {
             name: "",
             position: "",
-            elements: []
+            items: []
         }
 
         this.handleChangeAdmin = this.handleChangeAdmin.bind(this);
         this.handleSubmitAdmin = this.handleSubmitAdmin.bind(this);
     }
 
-    // componentDidMount = () => {
-    //     const dataRef = firebase.database().ref('teachers');
-    //     dataRef.on('value', (snapshot) => {
-    //         let elements = snapshot.val();
-    //         let newState = [];
-    //         for(let element in elements) {
-    //             newState.push({
-    //                 id: element,
-    //                 name: elements[element].name,
-    //                 age: elements[element].age,
-    //                 grade: elements[element].grade,
-    //                 gender: elements[element].gender
-    //             });
-    //         }
-    //         this.setState({
-    //             elements: newState
-    //         });
-    //     });
-    // }
+    componentDidMount() {
+        const itemsRef = firebase.database().ref('admins');
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
+            newState.push({
+              id: item,
+              name: items[item].name,
+              position: items[item].position
+            });
+          }
+          this.setState({
+            items: newState
+          });
+        });
+      }
 
     handleChangeAdmin = (e) => {
         this.setState({
@@ -74,16 +71,27 @@ class Admin extends React.Component {
         return(
             <div className="AdminMain"> 
             <section className="add-item-main">
-
+            <h1> Add Admin to Database </h1>
             <form onSubmit={this.handleSubmitAdmin}>
                 <input type="text" name="name" placeholder="Admin Name" onChange={this.handleChangeAdmin} value={this.state.name} />
                 <input type="text" name="position" placeholder="Admin Position" onChange={this.handleChangeAdmin} value={this.state.position} />
                 <button>Add Admin Info</button>
             </form>
-
             </section>
 
-            {/* <DisplayData dataVal = {this.state.elements}/> */}
+            <section className='display-item'>
+                <h1> Admin Database Information </h1>
+                <div className="wrapper">
+                    {this.state.items.map((item) => {
+                        return (
+                            <li key={item.id}>
+                                <p>{"name:" + " " + item.name}</p>
+                                <p> {"classroom:" + " " + item.position}</p>
+                            </li>
+                        )
+                    })}
+                </div>
+            </section>
             </div>
 
 

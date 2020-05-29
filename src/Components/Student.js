@@ -3,7 +3,6 @@ import '../App.css';
 import '../index.js'
 import firebase from 'firebase';
 import app  from '../firebase';
-// import DisplayData from './DisplayData.js';
 
 class Student extends React.Component {
     constructor(props){
@@ -17,7 +16,7 @@ class Student extends React.Component {
             grade: "",
             class:"",
             gender: "",
-            elements: []
+            items: []
         }
         // Bind our handleChange and handleSubmit functions
         // so that they can update everytime we utilize an element 
@@ -27,27 +26,26 @@ class Student extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount = () => {
-        const dataRef = firebase.database().ref('students');
-        dataRef.on('value', (snapshot) => {
-            let elements = snapshot.val();
-            let newState = [];
-            for(let element in elements) {
-                newState.push({
-                    id: element,
-                    name: elements[element].name,
-                    age: elements[element].age,
-                    grade: elements[element].grade,
-                    class: elements[element].class,
-                    gender: elements[element].gender
-                });
-            }
-
-            this.setState({
-                elements: newState
+    componentDidMount() {
+        const itemsRef = firebase.database().ref('students');
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
+            newState.push({
+              id: item,
+              name: items[item].name,
+              age: items[item].age,
+              grade: items[item].grade,
+              class: items[item].class,
+              gender: items[item].gender
             });
+          }
+          this.setState({
+            items: newState
+          });
         });
-    }
+      }
 
     handleChange = (e) => {
         this.setState({
@@ -97,7 +95,7 @@ class Student extends React.Component {
         return(
             <div className="StudentMain"> 
             <section className="add-item">
-
+            <h1> Add Student to Database </h1>
             <form onSubmit={this.handleSubmit}>
                 <input type="text" name="name" placeholder="Student Name" onChange={this.handleChange} value={this.state.name} />
                 <input type="text" name="age" placeholder="Student Age" onChange={this.handleChange} value={this.state.age} />
@@ -109,7 +107,23 @@ class Student extends React.Component {
 
             </section>
 
-            {/* <DisplayData dataVal = {this.state.elements}/> */}
+            <section className='display-item'>
+                <h1> Student Database Information </h1>
+                <div className="wrapper">
+                    {this.state.items.map((item) => {
+                        return (
+                            <li key={item.id}>
+                                <p>{"name:" + " " + item.name}</p>
+                                <p> {"age:" + " " + item.age}</p>
+                                <p> {"grade:" + " " + item.grade}</p>
+                                <p> {"classroom:" + " " + item.class}</p>
+                                <p> {"gender:" + " " + item.gender}</p>
+                            </li>
+                        )
+                    })}
+                </div>
+            </section>
+
             </div>
 
 

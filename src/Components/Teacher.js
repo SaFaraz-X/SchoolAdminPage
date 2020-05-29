@@ -3,7 +3,6 @@ import '../App.css';
 import '../index.js'
 import firebase from 'firebase';
 import app  from '../firebase';
-// import DisplayData from './DisplayData.js';
 
 class Teacher extends React.Component {
     constructor(props){
@@ -14,32 +13,30 @@ class Teacher extends React.Component {
         this.state = {
             name: "",
             class: "",
-            elements: []
+            items: []
         }
 
         this.handleChangeTeacher = this.handleChangeTeacher.bind(this);
         this.handleSubmitTeacher = this.handleSubmitTeacher.bind(this);
     }
 
-    // componentDidMount = () => {
-    //     const dataRef = firebase.database().ref('teachers');
-    //     dataRef.on('value', (snapshot) => {
-    //         let elements = snapshot.val();
-    //         let newState = [];
-    //         for(let element in elements) {
-    //             newState.push({
-    //                 id: element,
-    //                 name: elements[element].name,
-    //                 age: elements[element].age,
-    //                 grade: elements[element].grade,
-    //                 gender: elements[element].gender
-    //             });
-    //         }
-    //         this.setState({
-    //             elements: newState
-    //         });
-    //     });
-    // }
+    componentDidMount() {
+        const itemsRef = firebase.database().ref('teachers');
+        itemsRef.on('value', (snapshot) => {
+          let items = snapshot.val();
+          let newState = [];
+          for (let item in items) {
+            newState.push({
+              id: item,
+              name: items[item].name,
+              class: items[item].class
+            });
+          }
+          this.setState({
+            items: newState
+          });
+        });
+      }
 
     handleChangeTeacher = (e) => {
         this.setState({
@@ -67,6 +64,11 @@ class Teacher extends React.Component {
           name: '',
           class: '',
         });
+
+        teacherRef.on('value', (snapshot) => {
+            console.log("hi");
+            console.log(snapshot.val());
+          });
       }
 
       
@@ -74,7 +76,7 @@ class Teacher extends React.Component {
         return(
             <div className="TeacherMain"> 
             <section className="add-item-teacher">
-
+            <h1> Add Teacher to Database </h1>
             <form onSubmit={this.handleSubmitTeacher}>
                 <input type="text" name="name" placeholder="Teacher Name" onChange={this.handleChangeTeacher} value={this.state.name} />
                 <input type="text" name="class" placeholder="Teacher's Classroom Number" onChange={this.handleChangeTeacher} value={this.state.class} />
@@ -83,7 +85,19 @@ class Teacher extends React.Component {
 
             </section>
 
-            {/* <DisplayData dataVal = {this.state.elements}/> */}
+            <section className='display-item'>
+                <h1> Teacher Database Information </h1>
+                <div className="wrapper">
+                    {this.state.items.map((item) => {
+                        return (
+                            <li key={item.id}>
+                                <p>{"name:" + " " + item.name}</p>
+                                <p> {"classroom:" + " " + item.class}</p>
+                            </li>
+                        )
+                    })}
+                </div>
+            </section>
             </div>
 
 
