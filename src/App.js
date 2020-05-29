@@ -3,7 +3,7 @@ import './App.css';
 import './index.js'
 import firebase from 'firebase';
 import app  from './firebase';
-import Student from './Student.js';
+import Student from './Components/Student.js';
 
 
 
