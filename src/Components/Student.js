@@ -15,6 +15,7 @@ class Student extends React.Component {
             name: "",
             age: "",
             grade: "",
+            class:"",
             gender: "",
             elements: []
         }
@@ -37,6 +38,7 @@ class Student extends React.Component {
                     name: elements[element].name,
                     age: elements[element].age,
                     grade: elements[element].grade,
+                    class: elements[element].class,
                     gender: elements[element].gender
                 });
             }
@@ -72,6 +74,7 @@ class Student extends React.Component {
           name: this.state.name,
           age: this.state.age,
           grade: this.state.grade,
+          class: this.state.class,
           gender: this.state.gender
         }
         // Push the object 'student' to the dataRef variable
@@ -84,6 +87,7 @@ class Student extends React.Component {
           name: '',
           age: '',
           grade: '',
+          class: '',
           gender: ''
         });
       }
@@ -98,8 +102,9 @@ class Student extends React.Component {
                 <input type="text" name="name" placeholder="Student Name" onChange={this.handleChange} value={this.state.name} />
                 <input type="text" name="age" placeholder="Student Age" onChange={this.handleChange} value={this.state.age} />
                 <input type="text" name="grade" placeholder="Student Grade" onChange={this.handleChange} value={this.state.grade} />
+                <input type="text" name="class" placeholder="Student Class" onChange={this.handleChange} value={this.state.class} />
                 <input type="text" name="gender" placeholder="Student Gender" onChange={this.handleChange} value={this.state.gender} />
-                <button>Add Item</button>
+                <button>Add Student Info</button>
             </form>
 
             </section>
